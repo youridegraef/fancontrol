@@ -18,7 +18,14 @@ public enum SMCError: Error, CustomStringConvertible {
         case .openFailed(let kr): return "IOServiceOpen failed (\(kr))"
         case .callFailed(let kr): return "IOConnectCallStructMethod failed (\(kr))"
         case .keyNotFound(let key): return "SMC key not found: \(key)"
-        case .smcResult(let key, let code): return "SMC error for \(key): result \(code)"
+        case .smcResult(let key, let code):
+            // 130 (0x82) = kSMCBadArgumentError. On Apple Silicon this is what the
+            // SMC returns for a fan write when another fan-control app already owns
+            // the SMC. Point the user at the real cause.
+            if code == 130 {
+                return "SMC rejected write to \(key) (result 130). Another fan-control app (e.g. Macs Fan Control) is likely running and holding the SMC - quit it and try again."
+            }
+            return "SMC error for \(key): result \(code)"
         case .unsupportedType(let key, let type): return "Unsupported data type \(type) for key \(key)"
         }
     }
