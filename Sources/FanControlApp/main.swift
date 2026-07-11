@@ -80,6 +80,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let edit = NSMenuItem(title: "Edit Presets\u{2026}", action: #selector(editPresets), keyEquivalent: ",")
         edit.target = self
         menu.addItem(edit)
+        let update = NSMenuItem(title: "Check for Updates\u{2026}", action: #selector(checkForUpdates), keyEquivalent: "")
+        update.target = self
+        menu.addItem(update)
         menu.addItem(.separator())
         let quit = NSMenuItem(title: "Quit FanControl", action: #selector(quit), keyEquivalent: "q")
         quit.target = self
@@ -155,6 +158,59 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         if let preset = currentPreset {
             lastAppliedCurveRPM = nil
             _ = apply(preset, interactive: true)
+        }
+    }
+
+    // MARK: - Updates
+
+    private var isUpdating = false
+
+    @objc private func checkForUpdates() {
+        guard !isUpdating else { return }
+        isUpdating = true
+        Updater.fetchLatest { [weak self] result in
+            guard let self else { return }
+            self.isUpdating = false
+            NSApp.activate(ignoringOtherApps: true)
+            switch result {
+            case .failure(let error):
+                self.showError("Update check failed", error.localizedDescription)
+            case .success(let release):
+                if Updater.isNewer(release.version, than: Updater.currentVersion) {
+                    self.promptInstall(release)
+                } else {
+                    let alert = NSAlert()
+                    alert.messageText = "You're up to date"
+                    alert.informativeText = "FanControl \(Updater.currentVersion) is the latest version."
+                    alert.runModal()
+                }
+            }
+        }
+    }
+
+    private func promptInstall(_ release: Updater.Release) {
+        let alert = NSAlert()
+        alert.messageText = "Update available: \(release.version)"
+        var info = "You have \(Updater.currentVersion). Install \(release.version)? FanControl will restart."
+        if !release.notes.isEmpty { info += "\n\n\(release.notes)" }
+        alert.informativeText = info
+        alert.addButton(withTitle: "Download & Install")
+        alert.addButton(withTitle: "Later")
+        guard alert.runModal() == .alertFirstButtonReturn else { return }
+
+        isUpdating = true
+        Updater.downloadAndInstall(release) { [weak self] result in
+            guard let self else { return }
+            self.isUpdating = false
+            switch result {
+            case .success:
+                // The detached installer swaps the bundle and relaunches
+                // once this process exits.
+                NSApp.terminate(nil)
+            case .failure(let error):
+                NSApp.activate(ignoringOtherApps: true)
+                self.showError("Update failed", error.localizedDescription)
+            }
         }
     }
 

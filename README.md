@@ -7,6 +7,7 @@ Minimal macOS menu bar app for controlling Mac fans with presets. No sensors lis
 The menu bar item shows the average CPU temperature. The menu lists your presets, then:
 
 - Edit Presets... — add, remove, rename, and reorder presets (persisted). Each preset is either a fixed RPM or a temperature curve.
+- Check for Updates... — queries GitHub Releases; if a newer version exists it downloads it, replaces the app in place, and relaunches.
 - Quit — restores SMC automatic control before exiting
 
 Presets come in two kinds:
