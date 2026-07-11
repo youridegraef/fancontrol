@@ -1,0 +1,11 @@
+{
+  "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/Sources/FanControlApp/PresetEditor.swift" : {
+    "abi-baseline-json" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp-p.build/Objects-normal/arm64/FanControlApp.abi.json",
+    "const-values" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp-p.build/Objects-normal/arm64/FanControlApp-primary.swiftconstvalues",
+    "dependencies" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp-p.build/Objects-normal/arm64/FanControlApp-primary.d",
+    "diagnostics" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp-p.build/Objects-normal/arm64/FanControlApp-primary.dia",
+    "swiftdoc" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp-p.build/Objects-normal/arm64/FanControlApp.swiftdoc",
+    "swiftmodule" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp-p.build/Objects-normal/arm64/FanControlApp.swiftmodule",
+    "swiftsourceinfo" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp-p.build/Objects-normal/arm64/FanControlApp.swiftsourceinfo"
+  }
+}

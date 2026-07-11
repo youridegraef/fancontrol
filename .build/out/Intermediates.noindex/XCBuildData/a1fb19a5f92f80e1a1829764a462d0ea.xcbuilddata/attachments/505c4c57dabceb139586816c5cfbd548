@@ -1,0 +1,16 @@
+{
+  "" : {
+    "const-values" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/fanctl-20AF15021A4BFE-testable-t.build/Objects-normal/arm64/fanctl-20AF15021A4BFE-testable-primary.swiftconstvalues",
+    "dependencies" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/fanctl-20AF15021A4BFE-testable-t.build/Objects-normal/arm64/fanctl-20AF15021A4BFE-testable-primary.d",
+    "diagnostics" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/fanctl-20AF15021A4BFE-testable-t.build/Objects-normal/arm64/fanctl-20AF15021A4BFE-testable-primary.dia",
+    "emit-module-dependencies" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/fanctl-20AF15021A4BFE-testable-t.build/Objects-normal/arm64/fanctl-20AF15021A4BFE-testable-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/fanctl-20AF15021A4BFE-testable-t.build/Objects-normal/arm64/fanctl-20AF15021A4BFE-testable-primary-emit-module.dia",
+    "pch" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/fanctl-20AF15021A4BFE-testable-t.build/Objects-normal/arm64/fanctl-20AF15021A4BFE-testable-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/fanctl-20AF15021A4BFE-testable-t.build/Objects-normal/arm64/fanctl-20AF15021A4BFE-testable-primary.swiftdeps"
+  },
+  "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/Sources/fanctl/main.swift" : {
+    "index-unit-output-path" : "/FanControl.build/Release/fanctl-20AF15021A4BFE-testable-t.build/Objects-normal/arm64/main.o",
+    "llvm-bc" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/fanctl-20AF15021A4BFE-testable-t.build/Objects-normal/arm64/main.bc",
+    "object" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/fanctl-20AF15021A4BFE-testable-t.build/Objects-normal/arm64/main.o"
+  }
+}

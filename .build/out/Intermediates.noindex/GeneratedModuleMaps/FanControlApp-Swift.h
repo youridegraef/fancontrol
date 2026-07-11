@@ -379,10 +379,16 @@ SWIFT_CLASS("_TtC13FanControlApp11AppDelegate")
 @end
 
 @class NSCoder;
+@class NSTableView;
+@class NSTableColumn;
+@class NSView;
 @class NSWindow;
-SWIFT_CLASS("_TtC13FanControlApp24SettingsWindowController")
-@interface SettingsWindowController : NSWindowController <NSWindowDelegate>
+SWIFT_CLASS("_TtC13FanControlApp22PresetEditorController")
+@interface PresetEditorController : NSWindowController <NSTableViewDataSource, NSTableViewDelegate, NSWindowDelegate>
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder OBJC_DESIGNATED_INITIALIZER SWIFT_UNAVAILABLE;
+- (NSInteger)numberOfRowsInTableView:(NSTableView * _Nonnull)tableView SWIFT_WARN_UNUSED_RESULT;
+- (NSView * _Nullable)tableView:(NSTableView * _Nonnull)tableView viewForTableColumn:(NSTableColumn * _Nullable)tableColumn row:(NSInteger)row SWIFT_WARN_UNUSED_RESULT;
+- (void)tableViewSelectionDidChange:(NSNotification * _Nonnull)notification;
 - (nonnull instancetype)initWithWindow:(NSWindow * _Nullable)window SWIFT_UNAVAILABLE;
 @end
 

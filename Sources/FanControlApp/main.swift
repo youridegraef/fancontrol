@@ -2,45 +2,19 @@ import AppKit
 import SMCKit
 
 // FanControl - minimal menu bar app. Shows average CPU temperature and
-// applies fan presets via the setuid fanctl helper.
+// applies user-defined fan presets via the setuid fanctl helper.
 //
-// Presets are fixed RPMs (user-editable, see Settings.swift). "Auto" is an
-// app-managed curve: at or below the min temp fans run at their hardware
-// minimum, at or above the max temp at their hardware maximum, linear
-// in between. Re-evaluated on every temperature tick.
+// Presets are either a fixed RPM or sensor based (temperature curve:
+// fans at hardware minimum at or below minTemp, hardware maximum at or
+// above maxTemp, linear in between, re-evaluated on every tick).
 
 let helperPath = "/usr/local/bin/fanctl"
 
-enum Preset: CaseIterable {
-    case auto, silent, balanced, performance, max
-
-    var title: String {
-        switch self {
-        case .auto: return "Auto"
-        case .silent: return "Silent"
-        case .balanced: return "Balanced"
-        case .performance: return "Performance"
-        case .max: return "Max"
-        }
-    }
-
-    func rpm(in settings: PresetSettings) -> Int? {
-        switch self {
-        case .auto: return nil
-        case .silent: return settings.silentRPM
-        case .balanced: return settings.balancedRPM
-        case .performance: return settings.performanceRPM
-        case .max: return settings.maxRPM
-        }
-    }
-}
-
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusItem: NSStatusItem!
-    private var presetItems: [NSMenuItem] = []
-    private var currentPreset: Preset = .auto
-    private var settings = PresetSettings.load()
-    private var settingsController: SettingsWindowController?
+    private var presets = PresetStore.load()
+    private var currentPresetID: UUID?
+    private var editorController: PresetEditorController?
 
     private var smc: SMC?
     private var temperatureKeys: [String] = []
@@ -49,7 +23,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private var fanMinRPM: Float = 0
     private var fanMaxRPM: Float = 0
-    private var lastAppliedAutoRPM: Float?
+    private var lastAppliedCurveRPM: Float?
+
+    private var currentPreset: FanPreset? {
+        presets.first { $0.id == currentPresetID }
+    }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -65,13 +43,33 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             fanMaxRPM = fan.maximum
         }
 
+        if let saved = PresetStore.loadSelectedID(), presets.contains(where: { $0.id == saved }) {
+            currentPresetID = saved
+        } else {
+            currentPresetID = presets.first?.id
+        }
+
+        rebuildMenu()
+        temperatureTick()
+        if let preset = currentPreset, preset.kind == .rpm {
+            _ = apply(preset, interactive: false)
+        }
+        temperatureTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { [weak self] _ in
+            self?.temperatureTick()
+        }
+        RunLoop.main.add(temperatureTimer!, forMode: .common)
+    }
+
+    // MARK: - Menu
+
+    private func rebuildMenu() {
         let menu = NSMenu()
-        for preset in Preset.allCases {
+        for preset in presets {
             let item = NSMenuItem(title: preset.title, action: #selector(selectPreset(_:)), keyEquivalent: "")
             item.target = self
-            item.representedObject = preset
+            item.representedObject = preset.id
+            item.state = preset.id == currentPresetID ? .on : .off
             menu.addItem(item)
-            presetItems.append(item)
         }
         menu.addItem(.separator())
         let edit = NSMenuItem(title: "Edit Presets\u{2026}", action: #selector(editPresets), keyEquivalent: ",")
@@ -82,16 +80,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         quit.target = self
         menu.addItem(quit)
         statusItem.menu = menu
-
-        updateCheckmarks()
-        temperatureTick()
-        temperatureTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { [weak self] _ in
-            self?.temperatureTick()
-        }
-        RunLoop.main.add(temperatureTimer!, forMode: .common)
     }
 
-    // MARK: - Temperature + auto curve
+    // MARK: - Temperature + sensor curve
 
     private func temperatureTick() {
         guard let smc, !temperatureKeys.isEmpty,
@@ -102,51 +93,64 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         lastTemperature = avg
         statusItem.button?.title = "\(Int(avg.rounded()))\u{00B0}C"
 
-        if currentPreset == .auto {
-            autoAdjust(temperature: avg, interactive: false)
+        if let preset = currentPreset, preset.kind == .sensor {
+            adjustCurve(preset: preset, temperature: avg, interactive: false)
         }
     }
 
-    /// Linear curve: settings.autoMinTemp -> fan hardware minimum,
-    /// settings.autoMaxTemp -> fan hardware maximum.
-    private func autoTargetRPM(for temperature: Float) -> Float {
-        let minT = Float(settings.autoMinTemp)
-        let maxT = Float(settings.autoMaxTemp)
+    private func curveTargetRPM(preset: FanPreset, temperature: Float) -> Float {
+        let minT = Float(preset.minTemp)
+        let maxT = Float(preset.maxTemp)
         let fraction = max(0, min(1, (temperature - minT) / (maxT - minT)))
         return fanMinRPM + (fanMaxRPM - fanMinRPM) * fraction
     }
 
-    private func autoAdjust(temperature: Float, interactive: Bool) {
+    private func adjustCurve(preset: FanPreset, temperature: Float, interactive: Bool) {
         guard fanMaxRPM > fanMinRPM else { return }
-        let target = autoTargetRPM(for: temperature)
-        if let last = lastAppliedAutoRPM, abs(target - last) < 100 { return }
+        let target = curveTargetRPM(preset: preset, temperature: temperature)
+        if let last = lastAppliedCurveRPM, abs(target - last) < 100 { return }
         if runHelper(["rpm", String(Int(target))], interactive: interactive) {
-            lastAppliedAutoRPM = target
+            lastAppliedCurveRPM = target
         }
     }
 
     // MARK: - Menu actions
 
     @objc private func selectPreset(_ sender: NSMenuItem) {
-        guard let preset = sender.representedObject as? Preset else { return }
-        if apply(preset) {
-            currentPreset = preset
-            updateCheckmarks()
+        guard let id = sender.representedObject as? UUID,
+              let preset = presets.first(where: { $0.id == id }) else { return }
+        if apply(preset, interactive: true) {
+            currentPresetID = id
+            PresetStore.saveSelectedID(id)
+            rebuildMenu()
         }
     }
 
     @objc private func editPresets() {
-        if settingsController == nil {
-            settingsController = SettingsWindowController(settings: settings) { [weak self] newSettings in
-                guard let self else { return }
-                self.settings = newSettings
-                self.lastAppliedAutoRPM = nil
-                _ = self.apply(self.currentPreset)
+        if editorController == nil {
+            editorController = PresetEditorController(presets: presets) { [weak self] newPresets in
+                self?.presetsSaved(newPresets)
             }
         }
         NSApp.activate(ignoringOtherApps: true)
-        settingsController?.window?.center()
-        settingsController?.showWindow(nil)
+        editorController?.window?.center()
+        editorController?.showWindow(nil)
+    }
+
+    private func presetsSaved(_ newPresets: [FanPreset]) {
+        presets = newPresets
+        PresetStore.save(presets)
+        editorController = nil
+
+        if currentPreset == nil {
+            currentPresetID = presets.first?.id
+            PresetStore.saveSelectedID(currentPresetID)
+        }
+        rebuildMenu()
+        if let preset = currentPreset {
+            lastAppliedCurveRPM = nil
+            _ = apply(preset, interactive: true)
+        }
     }
 
     @objc private func quit() {
@@ -157,26 +161,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     // MARK: - Applying presets
 
-    private func apply(_ preset: Preset) -> Bool {
-        if let rpm = preset.rpm(in: settings) {
-            return runHelper(["rpm", String(rpm)], interactive: true)
-        }
-        // Auto: apply the curve for the current temperature right away.
-        lastAppliedAutoRPM = nil
-        if let temp = lastTemperature {
-            autoAdjust(temperature: temp, interactive: true)
-        }
-        return true
-    }
-
-    private func updateCheckmarks() {
-        for item in presetItems {
-            let preset = item.representedObject as? Preset
-            item.state = preset == currentPreset ? .on : .off
+    private func apply(_ preset: FanPreset, interactive: Bool) -> Bool {
+        switch preset.kind {
+        case .rpm:
+            return runHelper(["rpm", String(preset.rpm)], interactive: interactive)
+        case .sensor:
+            lastAppliedCurveRPM = nil
+            if let temp = lastTemperature {
+                adjustCurve(preset: preset, temperature: temp, interactive: interactive)
+            }
+            return true
         }
     }
 
-    /// Runs the fanctl helper. When `interactive` is false (background auto
+    /// Runs the fanctl helper. When `interactive` is false (background curve
     /// adjustments), failures are logged instead of shown as alerts.
     @discardableResult
     private func runHelper(_ arguments: [String], interactive: Bool) -> Bool {
@@ -222,6 +220,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         alert.messageText = title
         alert.informativeText = message
         alert.runModal()
+    }
+}
+
+private extension FanPreset {
+    var title: String {
+        switch kind {
+        case .rpm: return "\(name) (\(rpm) RPM)"
+        case .sensor: return "\(name) (\(Int(minTemp))-\(Int(maxTemp))\u{00B0}C)"
+        }
     }
 }
 

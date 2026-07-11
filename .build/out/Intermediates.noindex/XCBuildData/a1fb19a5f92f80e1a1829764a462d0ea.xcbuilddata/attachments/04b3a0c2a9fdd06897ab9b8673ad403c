@@ -1,0 +1,4 @@
+module SMCKit {
+header "SMCKit-Swift.h"
+export *
+}

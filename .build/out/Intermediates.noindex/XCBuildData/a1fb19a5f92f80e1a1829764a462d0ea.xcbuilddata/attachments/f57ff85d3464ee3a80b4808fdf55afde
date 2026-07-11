@@ -1,0 +1,26 @@
+{
+  "" : {
+    "const-values" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp--333663A591F959DC-testable-t.build/Objects-normal/arm64/FanControlApp--333663A591F959DC-testable-primary.swiftconstvalues",
+    "dependencies" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp--333663A591F959DC-testable-t.build/Objects-normal/arm64/FanControlApp--333663A591F959DC-testable-primary.d",
+    "diagnostics" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp--333663A591F959DC-testable-t.build/Objects-normal/arm64/FanControlApp--333663A591F959DC-testable-primary.dia",
+    "emit-module-dependencies" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp--333663A591F959DC-testable-t.build/Objects-normal/arm64/FanControlApp--333663A591F959DC-testable-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp--333663A591F959DC-testable-t.build/Objects-normal/arm64/FanControlApp--333663A591F959DC-testable-primary-emit-module.dia",
+    "pch" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp--333663A591F959DC-testable-t.build/Objects-normal/arm64/FanControlApp--333663A591F959DC-testable-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp--333663A591F959DC-testable-t.build/Objects-normal/arm64/FanControlApp--333663A591F959DC-testable-primary.swiftdeps"
+  },
+  "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/Sources/FanControlApp/PresetEditor.swift" : {
+    "index-unit-output-path" : "/FanControl.build/Release/FanControlApp--333663A591F959DC-testable-t.build/Objects-normal/arm64/PresetEditor.o",
+    "llvm-bc" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp--333663A591F959DC-testable-t.build/Objects-normal/arm64/PresetEditor.bc",
+    "object" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp--333663A591F959DC-testable-t.build/Objects-normal/arm64/PresetEditor.o"
+  },
+  "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/Sources/FanControlApp/Presets.swift" : {
+    "index-unit-output-path" : "/FanControl.build/Release/FanControlApp--333663A591F959DC-testable-t.build/Objects-normal/arm64/Presets.o",
+    "llvm-bc" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp--333663A591F959DC-testable-t.build/Objects-normal/arm64/Presets.bc",
+    "object" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp--333663A591F959DC-testable-t.build/Objects-normal/arm64/Presets.o"
+  },
+  "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/Sources/FanControlApp/main.swift" : {
+    "index-unit-output-path" : "/FanControl.build/Release/FanControlApp--333663A591F959DC-testable-t.build/Objects-normal/arm64/main.o",
+    "llvm-bc" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp--333663A591F959DC-testable-t.build/Objects-normal/arm64/main.bc",
+    "object" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp--333663A591F959DC-testable-t.build/Objects-normal/arm64/main.o"
+  }
+}
