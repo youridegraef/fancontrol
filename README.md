@@ -4,12 +4,15 @@ Minimal macOS menu bar app for controlling Mac fans with presets. No sensors lis
 
 ## Menu
 
-- Auto — SMC manages fan speed (default)
-- Silent — minimum RPM
-- Balanced — 35% of the min..max range
-- Performance — 65%
-- Max — 100%
-- Quit — restores Auto before exiting
+The menu bar item shows the average CPU temperature. Menu:
+
+- Auto — app-managed curve (default): fans at hardware minimum at or below the min temp, hardware maximum at or above the max temp, linear in between. Default window: 50-75 C.
+- Silent — 2500 RPM
+- Balanced — 4500 RPM
+- Performance — 5000 RPM
+- Max — 6800 RPM
+- Edit Presets... — change the Auto temperature window and preset RPMs (persisted)
+- Quit — restores SMC automatic control before exiting
 
 ## How it works
 
@@ -32,6 +35,8 @@ Then launch FanControl from /Applications.
 ```sh
 fanctl status       # show fans
 fanctl set 50       # force all fans to 50% of their range
+fanctl rpm 4500     # force all fans to a fixed RPM
+fanctl temp         # average CPU temperature
 fanctl auto         # back to automatic
 ```
 
