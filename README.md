@@ -4,15 +4,17 @@ Minimal macOS menu bar app for controlling Mac fans with presets. No sensors lis
 
 ## Menu
 
-The menu bar item shows the average CPU temperature. Menu:
+The menu bar item shows the average CPU temperature. The menu lists your presets, then:
 
-- Auto — app-managed curve (default): fans at hardware minimum at or below the min temp, hardware maximum at or above the max temp, linear in between. Default window: 50-75 C.
-- Silent — 2500 RPM
-- Balanced — 4500 RPM
-- Performance — 5000 RPM
-- Max — 6800 RPM
-- Edit Presets... — change the Auto temperature window and preset RPMs (persisted)
+- Edit Presets... — add, remove, rename, and reorder presets (persisted). Each preset is either a fixed RPM or a temperature curve.
 - Quit — restores SMC automatic control before exiting
+
+Presets come in two kinds:
+
+- Temperature curve (e.g. the default "Auto"): fans at hardware minimum at or below the min temp, hardware maximum at or above the max temp, linear in between. Default window: 50-75 C.
+- Fixed RPM: forces all fans to a set RPM (clamped to each fan's hardware range).
+
+Default presets (all editable): Auto (curve 50-75 C), Silent (2500 RPM), Balanced (4500 RPM), Performance (5000 RPM), Max (6800 RPM).
 
 ## How it works
 
@@ -48,5 +50,5 @@ sudo make uninstall
 
 ## Notes
 
-- Quit any other fan control app (e.g. MacFansControl) first — two apps fighting over the SMC gives confusing results.
+- Quit any other fan control app (e.g. Macs Fan Control) first — two apps fighting over the SMC gives confusing results. A second app writing fan keys gets `SMC ... result 130` (bad argument); the app now flags this and tells you to quit the other app.
 - If the app quits unexpectedly while a preset is forced, fans stay forced until reboot or `fanctl auto`.
