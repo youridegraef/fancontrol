@@ -48,9 +48,12 @@ enum Updater {
             DispatchQueue.main.async { completion(r) }
         }
         let url = URL(string: "https://api.github.com/repos/\(repo)/releases/latest")!
-        var req = URLRequest(url: url)
+        // Ignore any cached response so a fresh release is seen immediately;
+        // GitHub sends cache headers that would otherwise serve a stale tag.
+        var req = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 15)
         req.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
         req.setValue("FanControl", forHTTPHeaderField: "User-Agent")
+        req.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
         URLSession.shared.dataTask(with: req) { data, _, error in
             if let error { finish(.failure(error)); return }
             guard let data,
