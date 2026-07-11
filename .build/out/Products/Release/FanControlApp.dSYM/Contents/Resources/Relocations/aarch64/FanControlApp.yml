@@ -1,0 +1,43 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Products/Release/FanControlApp'
+relocations:
+  - { offset: 0xC154A, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100001268, symSize: 0x94 }
+  - { offset: 0xC1998, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100001268, symSize: 0x94 }
+  - { offset: 0xC19D9, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp0C8DelegateCMa', symObjAddr: 0x94, symBinAddr: 0x1000012FC, symSize: 0x20 }
+  - { offset: 0xC1C44, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp0C8DelegateCfETo', symObjAddr: 0xB5C, symBinAddr: 0x100001DC4, symSize: 0x38 }
+  - { offset: 0xC1C73, size: 0x8, addend: 0x0, symName: ___swift_memcpy1_1, symObjAddr: 0xB94, symBinAddr: 0x100001DFC, symSize: 0xC }
+  - { offset: 0xC1C87, size: 0x8, addend: 0x0, symName: ___swift_noop_void_return, symObjAddr: 0xBA0, symBinAddr: 0x100001E08, symSize: 0x4 }
+  - { offset: 0xC1C9B, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp6PresetOwet', symObjAddr: 0xBA4, symBinAddr: 0x100001E0C, symSize: 0x90 }
+  - { offset: 0xC1CAF, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp6PresetOwst', symObjAddr: 0xC34, symBinAddr: 0x100001E9C, symSize: 0xB0 }
+  - { offset: 0xC1CC3, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp6PresetOwug', symObjAddr: 0xCE4, symBinAddr: 0x100001F4C, symSize: 0x8 }
+  - { offset: 0xC1CD7, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp6PresetOwup', symObjAddr: 0xCEC, symBinAddr: 0x100001F54, symSize: 0x4 }
+  - { offset: 0xC1CEB, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp6PresetOwui', symObjAddr: 0xCF0, symBinAddr: 0x100001F58, symSize: 0x8 }
+  - { offset: 0xC1CFF, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp6PresetOMa', symObjAddr: 0xCF8, symBinAddr: 0x100001F60, symSize: 0x10 }
+  - { offset: 0xC1D13, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp6PresetOs12CaseIterableAA8AllCasessADP_SlWT', symObjAddr: 0xD08, symBinAddr: 0x100001F70, symSize: 0x4 }
+  - { offset: 0xC1D27, size: 0x8, addend: 0x0, symName: '_$sSay13FanControlApp6PresetOGSayxGSlsWl', symObjAddr: 0xD0C, symBinAddr: 0x100001F74, symSize: 0x50 }
+  - { offset: 0xC1D3B, size: 0x8, addend: 0x0, symName: ___swift_instantiateConcreteTypeFromMangledNameAbstractV2, symObjAddr: 0xD5C, symBinAddr: 0x100001FC4, symSize: 0x54 }
+  - { offset: 0xC1D4F, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp6PresetOSHAASQWb', symObjAddr: 0xDB0, symBinAddr: 0x100002018, symSize: 0x4 }
+  - { offset: 0xC1D63, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp6PresetOACSQAAWl', symObjAddr: 0xDB4, symBinAddr: 0x10000201C, symSize: 0x40 }
+  - { offset: 0xC1D77, size: 0x8, addend: 0x0, symName: ___swift_instantiateConcreteTypeFromMangledNameV2, symObjAddr: 0xDF4, symBinAddr: 0x10000205C, symSize: 0x50 }
+  - { offset: 0xC1DC2, size: 0x8, addend: 0x0, symName: '_$ss12_ArrayBufferV20_consumeAndCreateNew14bufferIsUnique15minimumCapacity13growForAppendAByxGSb_SiSbtFSo10NSMenuItemC_Tg5', symObjAddr: 0xE44, symBinAddr: 0x1000020AC, symSize: 0x128 }
+  - { offset: 0xC1EE4, size: 0x8, addend: 0x0, symName: '_$ss22_ContiguousArrayBufferV19_uninitializedCount15minimumCapacityAByxGSi_SitcfCSo10NSMenuItemC_Tt1g5', symObjAddr: 0xF6C, symBinAddr: 0x1000021D4, symSize: 0x84 }
+  - { offset: 0xC1F5C, size: 0x8, addend: 0x0, symName: '_$ss12_ArrayBufferV13_copyContents8subRange12initializingSpyxGSnySiG_AFtFSo10NSMenuItemC_Tg5', symObjAddr: 0xFF0, symBinAddr: 0x100002258, symSize: 0xF8 }
+  - { offset: 0xC2047, size: 0x8, addend: 0x0, symName: '_$ss12_ArrayBufferV19_getElementSlowPathyyXlSiFSo10NSMenuItemC_Tg5', symObjAddr: 0x10E8, symBinAddr: 0x100002350, symSize: 0x1B4 }
+  - { offset: 0xC20F1, size: 0x8, addend: 0x0, symName: '_$s10Foundation4DataV15_RepresentationOWOe', symObjAddr: 0x1828, symBinAddr: 0x100002A90, symSize: 0x40 }
+  - { offset: 0xC2105, size: 0x8, addend: 0x0, symName: '_$sypSgWOh', symObjAddr: 0x1868, symBinAddr: 0x100002AD0, symSize: 0x48 }
+  - { offset: 0xC2119, size: 0x8, addend: 0x0, symName: '_$sSo10NSMenuItemCMa', symObjAddr: 0x18B0, symBinAddr: 0x100002B18, symSize: 0x44 }
+  - { offset: 0xC2177, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp6PresetOSQAASQ2eeoiySbx_xtFZTW', symObjAddr: 0xB4, symBinAddr: 0x10000131C, symSize: 0x14 }
+  - { offset: 0xC2206, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp6PresetOSHAASH9hashValueSivgTW', symObjAddr: 0xC8, symBinAddr: 0x100001330, symSize: 0x44 }
+  - { offset: 0xC22CB, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp6PresetOSHAASH4hash4intoys6HasherVz_tFTW', symObjAddr: 0x10C, symBinAddr: 0x100001374, symSize: 0x28 }
+  - { offset: 0xC2328, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp6PresetOSHAASH13_rawHashValue4seedS2i_tFTW', symObjAddr: 0x134, symBinAddr: 0x10000139C, symSize: 0x40 }
+  - { offset: 0xC23C0, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp6PresetOs12CaseIterableAAsADP8allCases03AllH0QzvgZTW', symObjAddr: 0x174, symBinAddr: 0x1000013DC, symSize: 0x40 }
+  - { offset: 0xC2692, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp0C8DelegateC29applicationDidFinishLaunchingyy10Foundation12NotificationVF', symObjAddr: 0x1B4, symBinAddr: 0x10000141C, symSize: 0x5B0 }
+  - { offset: 0xC2C0D, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp0C8DelegateC29applicationDidFinishLaunchingyy10Foundation12NotificationVFTo', symObjAddr: 0x764, symBinAddr: 0x1000019CC, symSize: 0xA0 }
+  - { offset: 0xC2C28, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp0C8DelegateC12selectPreset33_598B08A076CE1B291CBC4841317A6848LLyySo10NSMenuItemCF', symObjAddr: 0x804, symBinAddr: 0x100001A6C, symSize: 0x214 }
+  - { offset: 0xC2DF7, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp0C8DelegateC12selectPreset33_598B08A076CE1B291CBC4841317A6848LLyySo10NSMenuItemCFTo', symObjAddr: 0xA18, symBinAddr: 0x100001C80, symSize: 0x50 }
+  - { offset: 0xC2E1F, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp0C8DelegateC4quit33_598B08A076CE1B291CBC4841317A6848LLyyFTo', symObjAddr: 0xA68, symBinAddr: 0x100001CD0, symSize: 0x58 }
+  - { offset: 0xC2E8A, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp0C8DelegateCACycfcTo', symObjAddr: 0xAC0, symBinAddr: 0x100001D28, symSize: 0x68 }
+  - { offset: 0xC2EBF, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp0C8DelegateCfD', symObjAddr: 0xB28, symBinAddr: 0x100001D90, symSize: 0x34 }
+  - { offset: 0xC2FD8, size: 0x8, addend: 0x0, symName: '_$s13FanControlApp0C8DelegateC5apply33_598B08A076CE1B291CBC4841317A6848LLySbAA6PresetOFTf4nd_n', symObjAddr: 0x129C, symBinAddr: 0x100002504, symSize: 0x58C }
+...

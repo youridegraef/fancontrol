@@ -1,0 +1,4 @@
+module FanControlApp {
+header "FanControlApp-Swift.h"
+export *
+}

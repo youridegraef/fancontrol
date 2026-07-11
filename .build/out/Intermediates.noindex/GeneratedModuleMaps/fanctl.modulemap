@@ -1,0 +1,4 @@
+module fanctl {
+header "fanctl-Swift.h"
+export *
+}
