@@ -25,12 +25,20 @@ Supports Apple Silicon and Intel (`flt`/`fpe2` fan key types, `F0Md`/`FS!` mode 
 
 ## Install
 
+Download the release, unzip, and move `FanControl.app` to `/Applications`. On
+first launch the app installs its `fanctl` helper (bundled inside the app) to
+`/usr/local/bin/fanctl` with the setuid bit - macOS shows one administrator
+prompt. Authorize it and the app can control fans. No build step needed.
+
+### Build from source
+
 ```sh
-make app            # build build/FanControl.app
-sudo make install   # install fanctl (setuid root) + copy app to /Applications
+make app            # build build/FanControl.app (fanctl bundled in Resources)
+sudo make install   # optional: install fanctl (setuid root) + copy app to /Applications
 ```
 
-Then launch FanControl from /Applications.
+Building yourself is optional - a release `FanControl.app` self-installs the
+helper. `make install` is only a convenience for developers.
 
 ## CLI usage
 

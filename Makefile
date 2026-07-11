@@ -13,8 +13,10 @@ build:
 app: build
 	rm -rf $(APP_BUNDLE)
 	mkdir -p $(APP_BUNDLE)/Contents/MacOS
+	mkdir -p $(APP_BUNDLE)/Contents/Resources
 	cp Info.plist $(APP_BUNDLE)/Contents/Info.plist
 	cp $(BUILD_DIR)/FanControlApp $(APP_BUNDLE)/Contents/MacOS/$(APP_NAME)
+	cp $(BUILD_DIR)/fanctl $(APP_BUNDLE)/Contents/Resources/fanctl
 	codesign --force --sign - $(APP_BUNDLE)
 	@echo "Built $(APP_BUNDLE)"
 

@@ -49,6 +49,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             currentPresetID = presets.first?.id
         }
 
+        // Install/refresh the setuid helper bundled in the app (one admin
+        // prompt when missing or out of date). Users who download the app
+        // from a release do not need to build or run `make install`.
+        HelperInstaller.ensureInstalled()
+
         rebuildMenu()
         temperatureTick()
         if let preset = currentPreset, preset.kind == .rpm {
@@ -178,10 +183,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     /// adjustments), failures are logged instead of shown as alerts.
     @discardableResult
     private func runHelper(_ arguments: [String], interactive: Bool) -> Bool {
+        if !FileManager.default.isExecutableFile(atPath: helperPath) {
+            // Helper missing (first launch, or the admin prompt was
+            // cancelled). Try installing the bundled copy again.
+            _ = HelperInstaller.ensureInstalled()
+        }
         guard FileManager.default.isExecutableFile(atPath: helperPath) else {
             if interactive {
                 showError("Helper not installed",
-                          "fanctl was not found at \(helperPath).\n\nRun `make app` and `sudo make install` in the FanControl project directory first.")
+                          "fanctl was not installed at \(helperPath).\n\nAuthorize the administrator prompt so FanControl can install its helper, then try again.")
             } else {
                 NSLog("FanControl: helper missing at \(helperPath)")
             }

@@ -3,9 +3,22 @@
 <plist version="1.0">
 <dict>
 	<key>files</key>
-	<dict/>
+	<dict>
+		<key>Resources/fanctl</key>
+		<data>
+		qFmUxqNsp4Le4NU8h5zmSSUqq3E=
+		</data>
+	</dict>
 	<key>files2</key>
-	<dict/>
+	<dict>
+		<key>Resources/fanctl</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			bxN5YjwQt80VnGkftMhOqHc82FBu4sQXWUPcrR12hSo=
+			</data>
+		</dict>
+	</dict>
 	<key>rules</key>
 	<dict>
 		<key>^Resources/</key>
