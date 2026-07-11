@@ -81,7 +81,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         edit.target = self
         menu.addItem(edit)
         menu.addItem(.separator())
-        let update = NSMenuItem(title: "Check for Updates\u{2026}", action: #selector(checkForUpdates), keyEquivalent: "")
+        let update = NSMenuItem(title: "Check for Updates\u{2026} (\(Updater.currentVersion))", action: #selector(checkForUpdates), keyEquivalent: "")
         update.target = self
         menu.addItem(update)
         menu.addItem(.separator())
