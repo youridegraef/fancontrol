@@ -1,4 +1,5 @@
 import AppKit
+import SMCKit
 
 // FanControl - minimal menu bar app. Presets only: Auto, Silent, Balanced,
 // Performance, Max. Applies presets by invoking the setuid fanctl helper.
@@ -33,12 +34,24 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusItem: NSStatusItem!
     private var presetItems: [NSMenuItem] = []
     private var currentPreset: Preset = .auto
+    private var smc: SMC?
+    private var temperatureKeys: [String] = []
+    private var temperatureTimer: Timer?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         if let button = statusItem.button {
-            button.image = NSImage(systemSymbolName: "fanblades", accessibilityDescription: "FanControl")
+            button.font = NSFont.monospacedDigitSystemFont(ofSize: NSFont.systemFontSize, weight: .regular)
+            button.title = "--\u{00B0}C"
         }
+
+        smc = try? SMC()
+        temperatureKeys = (try? smc?.cpuTemperatureKeys()) ?? []
+        updateTemperature()
+        temperatureTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { [weak self] _ in
+            self?.updateTemperature()
+        }
+        RunLoop.main.add(temperatureTimer!, forMode: .common)
 
         let menu = NSMenu()
         for preset in Preset.allCases {
@@ -55,6 +68,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         statusItem.menu = menu
 
         updateCheckmarks()
+    }
+
+    private func updateTemperature() {
+        guard let smc, !temperatureKeys.isEmpty,
+              let avg = smc.averageTemperature(keys: temperatureKeys) else {
+            statusItem.button?.title = "--\u{00B0}C"
+            return
+        }
+        statusItem.button?.title = "\(Int(avg.rounded()))\u{00B0}C"
     }
 
     @objc private func selectPreset(_ sender: NSMenuItem) {

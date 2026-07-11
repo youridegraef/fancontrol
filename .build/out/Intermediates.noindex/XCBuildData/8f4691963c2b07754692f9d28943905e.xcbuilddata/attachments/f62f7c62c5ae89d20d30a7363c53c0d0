@@ -1,0 +1,16 @@
+{
+  "" : {
+    "const-values" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/SMCKit-t.build/Objects-normal/arm64/SMCKit-primary.swiftconstvalues",
+    "dependencies" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/SMCKit-t.build/Objects-normal/arm64/SMCKit-primary.d",
+    "diagnostics" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/SMCKit-t.build/Objects-normal/arm64/SMCKit-primary.dia",
+    "emit-module-dependencies" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/SMCKit-t.build/Objects-normal/arm64/SMCKit-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/SMCKit-t.build/Objects-normal/arm64/SMCKit-primary-emit-module.dia",
+    "pch" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/SMCKit-t.build/Objects-normal/arm64/SMCKit-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/SMCKit-t.build/Objects-normal/arm64/SMCKit-primary.swiftdeps"
+  },
+  "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/Sources/SMCKit/SMC.swift" : {
+    "index-unit-output-path" : "/FanControl.build/Release/SMCKit-t.build/Objects-normal/arm64/SMC.o",
+    "llvm-bc" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/SMCKit-t.build/Objects-normal/arm64/SMC.bc",
+    "object" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/SMCKit-t.build/Objects-normal/arm64/SMC.o"
+  }
+}

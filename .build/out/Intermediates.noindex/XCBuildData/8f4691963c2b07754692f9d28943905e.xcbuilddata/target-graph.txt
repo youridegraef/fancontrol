@@ -1,0 +1,16 @@
+Target dependency graph (6 targets)
+Target 'AllExcludingTests' in project 'Aggregate'
+➜ Explicit dependency on target 'fanctl-product' in project 'FanControl'
+➜ Explicit dependency on target 'FanControlApp-product' in project 'FanControl'
+➜ Explicit dependency on target 'fanctl' in project 'FanControl'
+➜ Explicit dependency on target 'FanControlApp' in project 'FanControl'
+➜ Explicit dependency on target 'SMCKit' in project 'FanControl'
+Target 'FanControlApp' in project 'FanControl'
+➜ Explicit dependency on target 'SMCKit' in project 'FanControl'
+Target 'fanctl' in project 'FanControl'
+➜ Explicit dependency on target 'SMCKit' in project 'FanControl'
+Target 'FanControlApp-product' in project 'FanControl'
+➜ Explicit dependency on target 'SMCKit' in project 'FanControl'
+Target 'fanctl-product' in project 'FanControl'
+➜ Explicit dependency on target 'SMCKit' in project 'FanControl'
+Target 'SMCKit' in project 'FanControl' (no dependencies)

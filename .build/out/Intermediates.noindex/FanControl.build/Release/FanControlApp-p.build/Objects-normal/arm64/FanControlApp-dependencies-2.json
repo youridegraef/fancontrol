@@ -116,6 +116,11 @@
   },
   {
     "isFramework" : false,
+    "moduleName" : "SMCKit",
+    "modulePath" : "\/Users\/youridegraef\/Documents\/Personal\/Projects\/fancontrol\/FanControl\/.build\/out\/Products\/Release\/SMCKit.swiftmodule\/arm64-apple-macos.swiftmodule"
+  },
+  {
+    "isFramework" : false,
     "moduleName" : "Spatial",
     "modulePath" : "\/Applications\/Xcode-beta.app\/Contents\/Developer\/Toolchains\/XcodeDefault.xctoolchain\/usr\/lib\/swift\/macosx\/prebuilt-modules\/27.0\/Spatial.swiftmodule\/arm64e-apple-macos.swiftmodule"
   },

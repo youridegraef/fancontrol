@@ -9,6 +9,7 @@ usage:
   fanctl status        show fans (index, actual/min/max/target RPM, mode)
   fanctl auto          return all fans to automatic control
   fanctl set <pct>     force all fans to <pct>% of their min..max range (0-100)
+  fanctl temp          show average CPU temperature
 """
 
 func fail(_ message: String) -> Never {
@@ -60,6 +61,14 @@ do {
             try smc.setFanTarget(i, rpm: rpm)
         }
         print(String(format: "all fans forced to %.0f%%", pct))
+
+    case "temp":
+        let keys = try smc.cpuTemperatureKeys()
+        if let avg = smc.averageTemperature(keys: keys) {
+            print(String(format: "cpu average: %.1f C (%d sensors)", avg, keys.count))
+        } else {
+            fail("fanctl: no CPU temperature sensors found")
+        }
 
     default:
         fail(usage)

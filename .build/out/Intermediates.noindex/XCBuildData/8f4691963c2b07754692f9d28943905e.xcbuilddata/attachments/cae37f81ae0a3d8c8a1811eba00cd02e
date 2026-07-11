@@ -1,0 +1,16 @@
+{
+  "" : {
+    "const-values" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp-p.build/Objects-normal/arm64/FanControlApp-primary.swiftconstvalues",
+    "dependencies" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp-p.build/Objects-normal/arm64/FanControlApp-primary.d",
+    "diagnostics" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp-p.build/Objects-normal/arm64/FanControlApp-primary.dia",
+    "emit-module-dependencies" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp-p.build/Objects-normal/arm64/FanControlApp-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp-p.build/Objects-normal/arm64/FanControlApp-primary-emit-module.dia",
+    "pch" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp-p.build/Objects-normal/arm64/FanControlApp-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp-p.build/Objects-normal/arm64/FanControlApp-primary.swiftdeps"
+  },
+  "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/Sources/FanControlApp/main.swift" : {
+    "index-unit-output-path" : "/FanControl.build/Release/FanControlApp-p.build/Objects-normal/arm64/main.o",
+    "llvm-bc" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp-p.build/Objects-normal/arm64/main.bc",
+    "object" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/FanControlApp-p.build/Objects-normal/arm64/main.o"
+  }
+}

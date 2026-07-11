@@ -64,6 +64,7 @@ private struct SMCParamStruct {
 private let kSMCHandleYPCEvent: UInt32 = 2
 private let kSMCReadKey: UInt8 = 5
 private let kSMCWriteKey: UInt8 = 6
+private let kSMCGetKeyFromIndex: UInt8 = 8
 private let kSMCGetKeyInfo: UInt8 = 9
 private let kSMCKeyNotFound: UInt8 = 0x84
 
@@ -155,6 +156,9 @@ public final class SMC {
             return Float(bitPattern: bits)
         case "fpe2":
             return Float(UInt16(data[0]) << 8 | UInt16(data[1])) / 4.0
+        case "sp78":
+            let raw = Int16(bitPattern: UInt16(data[0]) << 8 | UInt16(data[1]))
+            return Float(raw) / 256.0
         case "ui8 ":
             return Float(data[0])
         case "ui16":
@@ -190,6 +194,45 @@ public final class SMC {
 
     public func writeUInt8(_ key: String, _ value: UInt8) throws {
         try writeBytes(key, [value])
+    }
+
+    // MARK: - Key enumeration
+
+    public func allKeys() throws -> [String] {
+        let count = Int(try readFloat("#KEY"))
+        var keys: [String] = []
+        keys.reserveCapacity(count)
+        for i in 0..<count {
+            var input = SMCParamStruct()
+            input.data8 = kSMCGetKeyFromIndex
+            input.data32 = UInt32(i)
+            guard let output = try? call(&input), output.result == 0 else { continue }
+            keys.append(fourCCString(output.key))
+        }
+        return keys
+    }
+
+    // MARK: - CPU temperature
+
+    /// SMC keys that report a plausible CPU die temperature. Key names vary
+    /// per chip generation: Tp*/Te*/Tf* on Apple Silicon, TC* on Intel.
+    public func cpuTemperatureKeys() throws -> [String] {
+        let prefixes = ["Tp", "Te", "Tf", "TC"]
+        return try allKeys().filter { key in
+            guard prefixes.contains(where: key.hasPrefix) else { return false }
+            guard let v = try? readFloat(key) else { return false }
+            return v > 10 && v < 120
+        }
+    }
+
+    /// Average over the given sensor keys, skipping ones that read invalid.
+    public func averageTemperature(keys: [String]) -> Float? {
+        let temps = keys.compactMap { key -> Float? in
+            guard let v = try? readFloat(key), v > 10, v < 120 else { return nil }
+            return v
+        }
+        guard !temps.isEmpty else { return nil }
+        return temps.reduce(0, +) / Float(temps.count)
     }
 
     // MARK: - Fans

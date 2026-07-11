@@ -7,6 +7,6 @@ let package = Package(
     targets: [
         .target(name: "SMCKit"),
         .executableTarget(name: "fanctl", dependencies: ["SMCKit"]),
-        .executableTarget(name: "FanControlApp"),
+        .executableTarget(name: "FanControlApp", dependencies: ["SMCKit"]),
     ]
 )
