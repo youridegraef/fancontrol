@@ -9,6 +9,7 @@ usage:
   fanctl status        show fans (index, actual/min/max/target RPM, mode)
   fanctl auto          return all fans to automatic control
   fanctl set <pct>     force all fans to <pct>% of their min..max range (0-100)
+  fanctl rpm <rpm>     force all fans to a fixed RPM (clamped to each fan's range)
   fanctl temp          show average CPU temperature
 """
 
@@ -61,6 +62,16 @@ do {
             try smc.setFanTarget(i, rpm: rpm)
         }
         print(String(format: "all fans forced to %.0f%%", pct))
+
+    case "rpm":
+        guard args.count >= 3, let rpm = Float(args[2]), (0...20000).contains(rpm) else {
+            fail(usage)
+        }
+        requireRoot()
+        for i in 0..<count {
+            try smc.setFanTarget(i, rpm: rpm)
+        }
+        print(String(format: "all fans forced to %.0f rpm (clamped per fan)", rpm))
 
     case "temp":
         let keys = try smc.cpuTemperatureKeys()

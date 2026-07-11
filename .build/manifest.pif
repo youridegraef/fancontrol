@@ -5,11 +5,11 @@
       "name" : "FanControl",
       "path" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl",
       "projects" : [
-        "ef864ec99adb3148881644d015ceb344b279a3d7341bc24c73d18764aa416187",
+        "5a6996e0e54120bcfdcf464e04ccf187136cfb2c5beda9ae1267ee8d4aabcb42",
         "b183269d70b9229fd3c8e142eea1c599b788051610eedcf7bbbf568aa9be3d03"
       ]
     },
-    "signature" : "895839964bcb6d5917b790ec924af41aa1771149eb3733a4c2d18cc77ce6ed6d",
+    "signature" : "16cc54980ce28c91d8085ca892680678d1802d4291e3f503c9b4babd3818b9b0",
     "type" : "workspace"
   },
   {
@@ -218,6 +218,14 @@
               {
                 "fileType" : "sourcecode.swift",
                 "guid" : "PACKAGE:fancontrol::MAINGROUP::REF_3::REF_0",
+                "name" : "Settings.swift",
+                "path" : "Settings.swift",
+                "sourceTree" : "<group>",
+                "type" : "file"
+              },
+              {
+                "fileType" : "sourcecode.swift",
+                "guid" : "PACKAGE:fancontrol::MAINGROUP::REF_3::REF_1",
                 "name" : "main.swift",
                 "path" : "main.swift",
                 "sourceTree" : "<group>",
@@ -252,6 +260,14 @@
               {
                 "fileType" : "sourcecode.swift",
                 "guid" : "PACKAGE:fancontrol::MAINGROUP::REF_5::REF_0",
+                "name" : "Settings.swift",
+                "path" : "Settings.swift",
+                "sourceTree" : "<group>",
+                "type" : "file"
+              },
+              {
+                "fileType" : "sourcecode.swift",
+                "guid" : "PACKAGE:fancontrol::MAINGROUP::REF_5::REF_1",
                 "name" : "main.swift",
                 "path" : "main.swift",
                 "sourceTree" : "<group>",
@@ -312,15 +328,15 @@
       "projectName" : "FanControl",
       "targets" : [
         "cc6d22fceabc7202231244187e3a7d723f9ed69a9b7dc1472b9b9d6a52b14933",
-        "e43fa424ca2f404d8de2cf9bde3536b9088da3ab5ace222a0c4a56a65c390c0f",
+        "e4d6660fa3b64e43754eeff06458751ef524e28b8fe637206661b74367a363e4",
         "ea88f2614fa344d50a8dc43a630bae725d73484554c70f3bfd64b83b5258da13",
-        "a164fa996da2971d4d8547b6b68585a35326e36a4db5d1199abb01ac9c597678",
+        "da0812d905fd9f08f9a47dd18ec767f6219f495ebe6170d4c21b1b9f01d53453",
         "e0e3ec655ec9f52847b795f2acadef51d702cf0f0e895fcfb108e18acb65747d",
         "477df9bcd356fd3e9e6a4ae8315738404a49032bcada3b467214215d0fa90dac",
         "a47a71e4d4473e71a50c02ea349bb33edb0b4c5ed0433e0abee8794416cb4b48"
       ]
     },
-    "signature" : "ef864ec99adb3148881644d015ceb344b279a3d7341bc24c73d18764aa416187",
+    "signature" : "5a6996e0e54120bcfdcf464e04ccf187136cfb2c5beda9ae1267ee8d4aabcb42",
     "type" : "project"
   },
   {
@@ -589,6 +605,15 @@
 
               ],
               "removeHeadersOnCopy" : "false"
+            },
+            {
+              "codeSignOnCopy" : "false",
+              "fileReference" : "PACKAGE:fancontrol::MAINGROUP::REF_3::REF_1",
+              "guid" : "PACKAGE-PRODUCT:fancontrol_FanControlApp.FanControlApp::BUILDPHASE_0::1",
+              "platformFilters" : [
+
+              ],
+              "removeHeadersOnCopy" : "false"
             }
           ],
           "guid" : "PACKAGE-PRODUCT:fancontrol_FanControlApp.FanControlApp::BUILDPHASE_0",
@@ -632,7 +657,7 @@
       "productTypeIdentifier" : "com.apple.product-type.tool",
       "type" : "standard"
     },
-    "signature" : "e43fa424ca2f404d8de2cf9bde3536b9088da3ab5ace222a0c4a56a65c390c0f",
+    "signature" : "e4d6660fa3b64e43754eeff06458751ef524e28b8fe637206661b74367a363e4",
     "type" : "target"
   },
   {
@@ -950,6 +975,15 @@
 
               ],
               "removeHeadersOnCopy" : "false"
+            },
+            {
+              "codeSignOnCopy" : "false",
+              "fileReference" : "PACKAGE:fancontrol::MAINGROUP::REF_5::REF_1",
+              "guid" : "PACKAGE-TARGET:FanControlApp--333663A591F959DC-testable::BUILDPHASE_0::1",
+              "platformFilters" : [
+
+              ],
+              "removeHeadersOnCopy" : "false"
             }
           ],
           "guid" : "PACKAGE-TARGET:FanControlApp--333663A591F959DC-testable::BUILDPHASE_0",
@@ -980,7 +1014,7 @@
       "productTypeIdentifier" : "org.swift.product-type.common.object",
       "type" : "standard"
     },
-    "signature" : "a164fa996da2971d4d8547b6b68585a35326e36a4db5d1199abb01ac9c597678",
+    "signature" : "da0812d905fd9f08f9a47dd18ec767f6219f495ebe6170d4c21b1b9f01d53453",
     "type" : "target"
   },
   {

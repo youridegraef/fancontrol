@@ -1,0 +1,16 @@
+{
+  "" : {
+    "const-values" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/fanctl-p.build/Objects-normal/arm64/fanctl-primary.swiftconstvalues",
+    "dependencies" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/fanctl-p.build/Objects-normal/arm64/fanctl-primary.d",
+    "diagnostics" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/fanctl-p.build/Objects-normal/arm64/fanctl-primary.dia",
+    "emit-module-dependencies" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/fanctl-p.build/Objects-normal/arm64/fanctl-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/fanctl-p.build/Objects-normal/arm64/fanctl-primary-emit-module.dia",
+    "pch" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/fanctl-p.build/Objects-normal/arm64/fanctl-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/fanctl-p.build/Objects-normal/arm64/fanctl-primary.swiftdeps"
+  },
+  "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/Sources/fanctl/main.swift" : {
+    "index-unit-output-path" : "/FanControl.build/Release/fanctl-p.build/Objects-normal/arm64/main.o",
+    "llvm-bc" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/fanctl-p.build/Objects-normal/arm64/main.bc",
+    "object" : "/Users/youridegraef/Documents/Personal/Projects/fancontrol/FanControl/.build/out/Intermediates.noindex/FanControl.build/Release/fanctl-p.build/Objects-normal/arm64/main.o"
+  }
+}
