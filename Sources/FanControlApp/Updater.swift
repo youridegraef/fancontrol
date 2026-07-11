@@ -5,7 +5,7 @@ import AppKit
 // relaunches. All network work is off the main thread; every completion
 // is delivered on the main queue so callers can drive UI directly.
 enum Updater {
-    static let repo = "youridegraef/fan"
+    static let repo = "youridegraef/fancontrol"
     static let assetName = "FanControl.zip"
 
     static var currentVersion: String {
