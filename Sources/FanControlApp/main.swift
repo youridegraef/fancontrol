@@ -25,6 +25,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var fanMaxRPM: Float = 0
     private var lastAppliedCurveRPM: Float?
 
+    // When true (default), fans are returned to macOS automatic control on
+    // sleep/lid-close and the preset is re-applied on wake.
+    private var resetOnSleep: Bool = {
+        let d = UserDefaults.standard
+        return d.object(forKey: "resetOnSleep") == nil ? true : d.bool(forKey: "resetOnSleep")
+    }()
+
+    // currentPresetID == nil means "Off" - macOS automatic control, no forcing.
+
     private var currentPreset: FanPreset? {
         presets.first { $0.id == currentPresetID }
     }
@@ -43,10 +52,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             fanMaxRPM = fan.maximum
         }
 
-        if let saved = PresetStore.loadSelectedID(), presets.contains(where: { $0.id == saved }) {
-            currentPresetID = saved
-        } else {
-            currentPresetID = presets.first?.id
+        switch PresetStore.loadSelectedRaw() {
+        case PresetStore.offSelection:
+            currentPresetID = nil   // Off / macOS automatic
+        case let raw?:
+            if let id = UUID(uuidString: raw), presets.contains(where: { $0.id == id }) {
+                currentPresetID = id
+            } else {
+                currentPresetID = presets.first?.id
+            }
+        case nil:
+            currentPresetID = presets.first?.id   // first run
         }
 
         // Install/refresh the setuid helper bundled in the app (one admin
@@ -56,19 +72,36 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         rebuildMenu()
         temperatureTick()
-        if let preset = currentPreset, preset.kind == .rpm {
-            _ = apply(preset, interactive: false)
+        if let preset = currentPreset {
+            if preset.kind == .rpm { _ = apply(preset, interactive: false) }
+        } else {
+            // Off: make sure fans are under macOS automatic control.
+            _ = runHelper(["auto"], interactive: false)
         }
         temperatureTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { [weak self] _ in
             self?.temperatureTick()
         }
         RunLoop.main.add(temperatureTimer!, forMode: .common)
+
+        // Return to macOS control on sleep and re-apply on wake.
+        let nc = NSWorkspace.shared.notificationCenter
+        nc.addObserver(self, selector: #selector(systemWillSleep),
+                       name: NSWorkspace.willSleepNotification, object: nil)
+        nc.addObserver(self, selector: #selector(systemDidWake),
+                       name: NSWorkspace.didWakeNotification, object: nil)
     }
 
     // MARK: - Menu
 
     private func rebuildMenu() {
         let menu = NSMenu()
+
+        let off = NSMenuItem(title: "Off (macOS automatic)", action: #selector(selectAutomatic), keyEquivalent: "")
+        off.target = self
+        off.state = currentPresetID == nil ? .on : .off
+        menu.addItem(off)
+        menu.addItem(.separator())
+
         for preset in presets {
             let item = NSMenuItem(title: preset.title, action: #selector(selectPreset(_:)), keyEquivalent: "")
             item.target = self
@@ -81,6 +114,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         edit.target = self
         menu.addItem(edit)
         menu.addItem(.separator())
+        let sleepToggle = NSMenuItem(title: "Reset fans on sleep", action: #selector(toggleResetOnSleep), keyEquivalent: "")
+        sleepToggle.target = self
+        sleepToggle.state = resetOnSleep ? .on : .off
+        menu.addItem(sleepToggle)
         let update = NSMenuItem(title: "Check for Updates\u{2026} (\(Updater.currentVersion))", action: #selector(checkForUpdates), keyEquivalent: "")
         update.target = self
         menu.addItem(update)
@@ -102,8 +139,27 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         lastTemperature = avg
         statusItem.button?.title = "\(Int(avg.rounded()))\u{00B0}C"
 
-        if let preset = currentPreset, preset.kind == .sensor {
-            adjustCurve(preset: preset, temperature: avg, interactive: false)
+        reassertCurrentPreset()
+    }
+
+    /// Keeps the active preset applied. If another controller (or a
+    /// sleep/wake cycle) reset the fans back to SMC automatic control, the
+    /// preset is re-applied so it stays sticky instead of randomly dropping
+    /// out. Does nothing when Off (macOS automatic) is selected.
+    private func reassertCurrentPreset() {
+        guard let preset = currentPreset else { return }
+
+        var reverted = false
+        if let smc, let fan = try? smc.fan(0) { reverted = !fan.forced }
+
+        switch preset.kind {
+        case .rpm:
+            if reverted { _ = runHelper(["rpm", String(preset.rpm)], interactive: false) }
+        case .sensor:
+            if reverted { lastAppliedCurveRPM = nil }
+            if let temp = lastTemperature {
+                adjustCurve(preset: preset, temperature: temp, interactive: false)
+            }
         }
     }
 
@@ -130,9 +186,39 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
               let preset = presets.first(where: { $0.id == id }) else { return }
         if apply(preset, interactive: true) {
             currentPresetID = id
-            PresetStore.saveSelectedID(id)
+            PresetStore.saveSelected(id)
             rebuildMenu()
         }
+    }
+
+    @objc private func selectAutomatic() {
+        if runHelper(["auto"], interactive: true) {
+            currentPresetID = nil
+            lastAppliedCurveRPM = nil
+            PresetStore.saveSelected(nil)
+            rebuildMenu()
+        }
+    }
+
+    @objc private func toggleResetOnSleep() {
+        resetOnSleep.toggle()
+        UserDefaults.standard.set(resetOnSleep, forKey: "resetOnSleep")
+        rebuildMenu()
+    }
+
+    // MARK: - Sleep / wake
+
+    @objc private func systemWillSleep() {
+        guard resetOnSleep, currentPreset != nil else { return }
+        // Hand fans back to macOS while asleep.
+        _ = runHelper(["auto"], interactive: false)
+        lastAppliedCurveRPM = nil
+    }
+
+    @objc private func systemDidWake() {
+        guard resetOnSleep, let preset = currentPreset else { return }
+        lastAppliedCurveRPM = nil
+        _ = apply(preset, interactive: false)
     }
 
     @objc private func editPresets() {
@@ -151,9 +237,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         PresetStore.save(presets)
         editorController = nil
 
-        if currentPreset == nil {
+        // If the selected preset was deleted, fall back to the first one.
+        // A nil id means Off (macOS automatic) and is left untouched.
+        if let id = currentPresetID, !presets.contains(where: { $0.id == id }) {
             currentPresetID = presets.first?.id
-            PresetStore.saveSelectedID(currentPresetID)
+            PresetStore.saveSelected(currentPresetID)
         }
         rebuildMenu()
         if let preset = currentPreset {

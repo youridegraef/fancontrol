@@ -4,11 +4,18 @@ Minimal macOS menu bar app for controlling Mac fans with presets. No sensors lis
 
 ## Menu
 
-The menu bar item shows the average CPU temperature. The menu lists your presets, then:
+The menu bar item shows the average CPU temperature. The menu lists an Off
+entry, then your presets, then:
 
-- Edit Presets... — add, remove, rename, and reorder presets (persisted). Each preset is either a fixed RPM or a temperature curve.
+- Off (macOS automatic) — hands the fans back to macOS/SMC automatic control; nothing is forced. Persisted like a preset.
+- Edit Presets... — add, remove, rename, and reorder presets (drag rows to reorder). Each preset is either a fixed RPM or a temperature curve.
+- Reset fans on sleep — when on (default), fans return to macOS automatic control on sleep/lid-close and the preset is re-applied on wake.
 - Check for Updates... — queries GitHub Releases; if a newer version exists it downloads it, replaces the app in place, and relaunches.
 - Quit — restores SMC automatic control before exiting
+
+The active preset is re-asserted on a timer: if another controller or a
+sleep/wake cycle drops the fans back to automatic, FanControl re-applies it
+so the setting stays sticky instead of randomly dropping out.
 
 Presets come in two kinds:
 

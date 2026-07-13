@@ -57,6 +57,8 @@ final class PresetEditorController: NSWindowController, NSWindowDelegate, NSTabl
         tableView.dataSource = self
         tableView.delegate = self
         tableView.allowsEmptySelection = false
+        // Drag to reorder presets.
+        tableView.registerForDraggedTypes([.string])
 
         let scroll = NSScrollView()
         scroll.documentView = tableView
@@ -173,6 +175,35 @@ final class PresetEditorController: NSWindowController, NSWindowDelegate, NSTabl
         commitDetail()
         selectedIndex = tableView.selectedRow
         loadDetail()
+    }
+
+    // MARK: - Drag to reorder
+
+    func tableView(_ tableView: NSTableView, pasteboardWriterForRow row: Int) -> NSPasteboardWriting? {
+        let item = NSPasteboardItem()
+        item.setString(String(row), forType: .string)
+        return item
+    }
+
+    func tableView(_ tableView: NSTableView, validateDrop info: NSDraggingInfo,
+                   proposedRow row: Int, proposedDropOperation op: NSTableView.DropOperation) -> NSDragOperation {
+        op == .above ? .move : []
+    }
+
+    func tableView(_ tableView: NSTableView, acceptDrop info: NSDraggingInfo,
+                   row: Int, dropOperation: NSTableView.DropOperation) -> Bool {
+        guard let raw = info.draggingPasteboard.pasteboardItems?.first?.string(forType: .string),
+              let from = Int(raw), presets.indices.contains(from) else { return false }
+        commitDetail()
+        var to = row
+        let moved = presets.remove(at: from)
+        if from < to { to -= 1 }
+        to = max(0, min(presets.count, to))
+        presets.insert(moved, at: to)
+        tableView.reloadData()
+        selectedIndex = to
+        tableView.selectRowIndexes([to], byExtendingSelection: false)
+        return true
     }
 
     // MARK: - Detail form

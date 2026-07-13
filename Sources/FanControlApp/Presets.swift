@@ -60,11 +60,16 @@ enum PresetStore {
         }
     }
 
-    static func loadSelectedID() -> UUID? {
-        UserDefaults.standard.string(forKey: selectedKey).flatMap(UUID.init(uuidString:))
+    // Raw persisted selection: a preset UUID string, the literal "off"
+    // (macOS automatic control), or nil on first run.
+    static let offSelection = "off"
+
+    static func loadSelectedRaw() -> String? {
+        UserDefaults.standard.string(forKey: selectedKey)
     }
 
-    static func saveSelectedID(_ id: UUID?) {
-        UserDefaults.standard.set(id?.uuidString, forKey: selectedKey)
+    /// Persist the selected preset, or `nil` to mean "off" (macOS automatic).
+    static func saveSelected(_ id: UUID?) {
+        UserDefaults.standard.set(id?.uuidString ?? offSelection, forKey: selectedKey)
     }
 }
