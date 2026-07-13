@@ -47,10 +47,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         smc = try? SMC()
         temperatureKeys = (try? smc?.cpuTemperatureKeys()) ?? []
-        if let smc, let fan = try? smc.fan(0) {
-            fanMinRPM = fan.minimum
-            fanMaxRPM = fan.maximum
-        }
+        refreshFanRange()
 
         switch PresetStore.loadSelectedRaw() {
         case PresetStore.offSelection:
@@ -170,8 +167,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         return fanMinRPM + (fanMaxRPM - fanMinRPM) * fraction
     }
 
+    /// Reads and caches the fan's hardware RPM range, ignoring flaky reads
+    /// that report 0 or an inverted range (which would drive the curve to a
+    /// 0 target and wedge the SMC).
+    private func refreshFanRange() {
+        guard let smc else { return }
+        for _ in 0..<3 {
+            if let fan = try? smc.fan(0), fan.minimum > 0, fan.maximum > fan.minimum {
+                fanMinRPM = fan.minimum
+                fanMaxRPM = fan.maximum
+                return
+            }
+        }
+    }
+
     private func adjustCurve(preset: FanPreset, temperature: Float, interactive: Bool) {
-        guard fanMaxRPM > fanMinRPM else { return }
+        if fanMinRPM <= 0 || fanMaxRPM <= fanMinRPM { refreshFanRange() }
+        guard fanMinRPM > 0, fanMaxRPM > fanMinRPM else { return }
         let target = curveTargetRPM(preset: preset, temperature: temperature)
         if let last = lastAppliedCurveRPM, abs(target - last) < 100 { return }
         if runHelper(["rpm", String(Int(target))], interactive: interactive) {

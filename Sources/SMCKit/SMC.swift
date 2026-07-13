@@ -11,6 +11,7 @@ public enum SMCError: Error, CustomStringConvertible {
     case keyNotFound(String)
     case smcResult(String, UInt8)
     case unsupportedType(String, String)
+    case invalidFanRange(Int)
 
     public var description: String {
         switch self {
@@ -19,14 +20,16 @@ public enum SMCError: Error, CustomStringConvertible {
         case .callFailed(let kr): return "IOConnectCallStructMethod failed (\(kr))"
         case .keyNotFound(let key): return "SMC key not found: \(key)"
         case .smcResult(let key, let code):
-            // 130 (0x82) = kSMCBadArgumentError. On Apple Silicon this is what the
-            // SMC returns for a fan write when another fan-control app already owns
-            // the SMC. Point the user at the real cause.
+            // 130 (0x82) = kSMCBadArgumentError. Two common causes on Apple
+            // Silicon: another fan-control app owns the SMC, or the SMC is
+            // wedged in a forced state (which a full shutdown clears - a
+            // restart does not power-cycle the SMC).
             if code == 130 {
-                return "SMC rejected write to \(key) (result 130). Another fan-control app (e.g. Macs Fan Control) is likely running and holding the SMC - quit it and try again."
+                return "SMC rejected write to \(key) (result 130). Either another fan-control app is holding the SMC (quit it), or the SMC is stuck - shut the Mac fully down (not restart), wait 30s, and power on."
             }
             return "SMC error for \(key): result \(code)"
         case .unsupportedType(let key, let type): return "Unsupported data type \(type) for key \(key)"
+        case .invalidFanRange(let i): return "Fan \(i) reported an invalid RPM range; skipping write to avoid wedging the SMC."
         }
     }
 }
@@ -271,7 +274,16 @@ public final class SMC {
     /// Force fan `i` to a fixed RPM (clamped to its min/max range).
     public func setFanTarget(_ i: Int, rpm: Float) throws {
         let f = try fan(i)
+        // Guard against a flaky read reporting a 0/inverted range. Writing a
+        // 0 target (or forcing with a bogus target) wedges the SMC into a
+        // state where all F0Md writes are then rejected with result 130.
+        guard f.minimum > 0, f.maximum > f.minimum else {
+            throw SMCError.invalidFanRange(i)
+        }
         let clamped = max(f.minimum, min(f.maximum, rpm))
+        // Write a valid target *before* engaging manual mode, so the fan is
+        // never in forced mode with an invalid target.
+        try writeFloat("F\(i)Tg", clamped)
         if keyExists("F\(i)Md") {
             try writeUInt8("F\(i)Md", 1)
         } else if keyExists("FS! ") {
@@ -279,7 +291,6 @@ public final class SMC {
             let mask = current | (1 << UInt16(i))
             try writeBytes("FS! ", [UInt8(mask >> 8), UInt8(mask & 0xFF)])
         }
-        try writeFloat("F\(i)Tg", clamped)
     }
 
     /// Return fan `i` to automatic (SMC-managed) control.
